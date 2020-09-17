@@ -34,34 +34,36 @@
       </div>
 
 <div class="form-inline">
-<div class="form-group col-md-4" >
-  <input type="text" name="title" value="" placeholder="Title" class="form-control" required
+<div class="form-group col-md-3" >
+  <input type="text" name="title" value="" id="Title"  placeholder="Title" class="form-control" required
 </div>
 
-<div class="form-group col-md-4" >
-  <input type="text" name="title" value="" placeholder="Author" class="form-control" required >
+<div class="form-group col-md-3" >
+  <input type="text" name="Author"  value="" id="Author" placeholder="Author" class="form-control" required >
 
  </div>
 
- <div class="form-group col-md-4" >
-   <input type="text" name="title" value="" placeholder="Publisher" class="form-control" required >
+ <div class="form-group col-md-3" >
+   <input type="text" name="Publisher"  value="" id="Publisher" placeholder="Publisher" class="form-control" required >
 
   </div>
 
- <div class="form-group col-md-4" >
-     <input type="text" name="title" value="" placeholder="Page_no" class="form-control" required >
+ <div class="form-group col-md-3" >
+     <input type="text" name="Page_no"  value="" id="Page_no" placeholder="Page_no" class="form-control" required >
 
         </div>
 
-    <div class="form-group col-md-4 my-2">
+    <div class="form-group col-md-3 my-2">
       <button type="button" name="button" class="btn-btn-outline-success form-group"> Add </button>
      <button type="button" name="button" class="btn-btn-outline-success form-group"> Add </button>
 
     </div>
 
-    <div class="form-group col-md-4 my-2">
+    <div class="form-group col-md-3 my-2">
       <button type="button" name="Add" class="btn-btn-outline-success mx-3 px-4" id="add"> Add </button>
-     <button type="button" name="button" class="btn-btn-outline-danger" href="javascript"> Add </button>
+     <button type="button" name="Add" class="btn-btn-outline-danger" href="javascript:void(0).
+     onclick=$('#link_add').slideUp(500); $('#show_add').show(500);"> Cancel </button>
+</div>
 
 <div class="row">
   <div class="col-md-12">

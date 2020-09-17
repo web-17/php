@@ -67,8 +67,8 @@ $.ajax({
   type: "post",
   data: {id:id},
   success: function(data){
-    $('#link_add').html(data);
-    $('#link_add').show();
+    $('#records_content').fadeout(1000).html(data);
+    $.get('#link_ad').show();
   }
 });
 
