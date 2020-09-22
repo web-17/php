@@ -2,76 +2,79 @@
 
 require_once "includes/db.php";
 
-$result=$conn->query('SELECT * FROM books order by id');
+$result = $conn->query("SELECT * FROM `books` ORDER BY id");
 
 
 ?>
-
-
 <table class="table table-bordered">
   <tr class="info">
-    <th> Id </th>
-    <th> Title </th>
-    <th> Author </th>
-    <th> Action </th>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Author</th>
+      <th>Publisher</th>
+    <th>Action</th>
   </tr>
 
-<?php
 
+<?php
 if($result->num_rows > 0){
+
   while($row = $result->fetch_assoc()){
 
-    echo'
+    echo '
     <tr>
-    <td>'.$row["id"].'</td>
-    <td>'.$row["title"].'</td>
-    <td>'.$row["author"].'</td>
-    <td><button id ="'.$row["id"].'" class = "edit btn btn-info"> Edit </button>
-    <button class= " del btn btn-danger" id="'.$row["id"].'"> delete </button>
+    <td>'.$row["id"] .'</td>
+    <td>'.$row["title"] .'</td>
+        <td>'.$row["publisher"] .'</td>
+    <td>'.$row["author"] .'</td>
+    <td><button id = "'.$row["id"] .'" class = "edit btn btn-info"> Edit </button>
+    <button class= "del btn btn-danger" id="'.$row["id"].'"> Delete </button>
     </td>
-    </tr>';
+    </tr>
+    ';
   }
 
   echo "</table>";
 }
-
  ?>
 
-<script type="text/javascript">
+ <script type="text/javascript">
+
 
 $('.del').click(function(){
+var id = $(this).attr('id');
 
-  var id = $(this).attr('id');
-  $.ajax({
+$.ajax({
 url: 'delete.php',
 type: 'post',
 data: {id: id},
 success : function(data){
-  $('#records_content').fadeout(1000).html(data);
-  $.get("view.php",function(data){
+  $('#records_content').fadeOut(1000).html(data);
+  $.get("view.php", function(data){
     $('#table_content').html(data);
   })
 }
 
-
-  })
 })
 
+})
+
+
 $('.edit').click(function(){
-  var id = $(this).attr('id');
-  $('#show_add').hide();
+var id = $(this).attr('id');
+$('#show_add').hide();
 
 $.ajax({
 
-  url: "Edit.php",
+  url: "edit.php",
   type: "post",
-  data: {id:id},
-  success: function(data){
-    $('#records_content').fadeout(1000).html(data);
-    $.get('#link_ad').show();
+  data: {id: id},
+  success : function(data){
+    $("#link_add").html(data);
+      $("#link_add").show();
   }
 });
 
-})
+});
 
-</script>
+ </script>

@@ -3,6 +3,7 @@
 
 require_once "includes/db.php";
 
+
 //Deklarojme variablat dhe i inicializojme si stringje bosh
 
 $name = $lname = $email = $password = '';
@@ -30,6 +31,8 @@ if(empty(trim($_POST['lname']))){
 
 }
 
+
+
 if(empty(trim($_POST['email']))){
 
   $email_err = "*Please enter email.";
@@ -41,8 +44,8 @@ if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
 $sql = "SELECT id FROM users where email = ?";
 
 if($stmt = $conn->prepare($sql)){
-
-  $stmt->bind_param("s", trim($_POST['email']));
+$email_ = trim($_POST['email']);
+  $stmt->bind_param("s", $email_ );
 
 if($stmt->execute()){
 
@@ -63,14 +66,46 @@ else {
 $stmt->close();
 }
 
+
 if(empty(trim($_POST['password']))){
 
   $password_err = "*Please enter a password.";
-}else{
+}
+elseif (strlen(trim($_POST['password'])) < 5) {
+    $password_err = "*Password must have at least 5 characters!";
+}
+else{
   $password = trim($_POST['password']);
 
 }
 
+if(empty($name_err) && empty($lname_err) && empty($email_err) && empty($password_err)){
+
+  $sql = "INSERT INTO users (name, last_name, email, password) VALUES (?, ?, ?, ?)";
+
+if($stmt = $conn->prepare($sql)){
+
+
+  $stmt->bind_param("ssss", $param_name, $param_lname, $param_email, $param_password);
+
+  $param_name = $name;
+  $param_lname = $lname;
+  $param_email = $email_;
+  $param_password = password_hash($password, PASSWORD_DEFAULT);
+
+  if ($stmt->execute()) {
+    header('location: login.php');
+  }else {
+    echo "Could not create a new user!";
+  }
+
+  $stmt->close();
+
+
+}
+}
+
+$conn->close();
 
 
 }
@@ -100,8 +135,10 @@ if(empty(trim($_POST['password']))){
       color:red
     }
   </style>
-  <body>
 
+  <body>
+    <?php require_once('includes/nav_bar.php');
+     ?>
 <div class="container my-4">
 
 <h2> Sign up</h2>
@@ -115,27 +152,27 @@ if(empty(trim($_POST['password']))){
 
     <div class="form-group">
       <label for="name">Name</label>
-      <input class="form-control" type="text" name="name" id="name" value="" placeholder="your name..." required>
+      <input class="form-control" type="text" name="name" id="name" value="<?php echo $name; ?>" placeholder="your name..." required>
     <span class="error"> <?php echo $name_err; ?></span>
     </div>
 
 
     <div class="form-group">
       <label for="lname">Last name</label>
-      <input  class="form-control" type="text" name="lname" id="lname" value="" placeholder="your last name..." required>
+      <input  class="form-control" type="text" name="lname" id="lname" value="<?php echo $lname; ?>" placeholder="your last name..." required>
     <span class="error"> <?php echo $lname_err; ?></span>
-  </div>
+    </div>
 
 
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input class="form-control" type="text" name="email" id="email" value="" placeholder="your email..." required>
+      <input class="form-control" type="text" name="email" id="email" value="<?php echo $email; ?>" placeholder="your email..." required>
     <span class="error"> <?php echo $email_err; ?></span>
     </div>
 
     <div class="form-group">
       <label for="password">Password</label>
-      <input class="form-control"  type="password" name="password" id="password" value="" placeholder="your password..." required>
+      <input class="form-control"  type="password" name="password" id="password" value="<?php echo $password; ?>" placeholder="your password..." required>
     <span class="error"> <?php echo $password_err; ?></span>
     </div>
 
@@ -144,7 +181,7 @@ if(empty(trim($_POST['password']))){
       <button type="submit" name="submit" class="btn btn-success"> Submit</button>
 
     </div>
-    <p> Already have an account?<a href="login.php">  Login here</a> </p>
+    <p> Already have an account?<a target="_blank" href="login.php">  Login here</a> </p>
 
     </form>
 
